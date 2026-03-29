@@ -41,6 +41,27 @@ bash scripts/run_wilddash_tune_perfect_final_1.sh
 bash scripts/run_perfect_final_1.sh
 ```
 
+## Run modes
+
+- **Full pipeline run (recommended):** use `deeplabv3plus/scripts/run_perfect_final_1.sh`.
+  - This executes both models (DeepLabV3+ and SegFormer) on both datasets (WildDash and Mapillary).
+- **Model-specific run:** run the model runner directly:
+  - DeepLab only: `deeplabv3plus/run_all_methods.py`
+  - SegFormer only: `segformer/run_all_methods_segformer.py`
+  - You can pass dataset-specific lists/masks via `--image-list` and `--mask-dir`.
+
+## Included vs not included
+
+- **Included in this repo**
+  - Benchmark code and scripts
+  - Mapping files
+  - Final summary artifacts (`results_summary.csv/.json`, `method_thresholds.json`)
+  - Plot images (`metrics_auroc_fpr95.png`)
+- **Not included in this repo**
+  - Model checkpoints/weights (`.pth`, `.pt`, `.tar`, `.ckpt`)
+  - Raw dataset images/masks from Mapillary/WildDash
+  - Large generated intermediate folders (e.g., local temporary masks/galleries)
+
 ## Notes
 
 - WildDash masks are generated from `mapping/id_ood_mapping.json` using key `wilddash`.
