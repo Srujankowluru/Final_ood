@@ -56,9 +56,12 @@ bash scripts/run_perfect_final_1.sh
 - **Mapillary Vistas dataset** (validation images and labels): [https://www.mapillary.com/dataset/vistas](https://www.mapillary.com/dataset/vistas)
 - **WildDash 2 dataset** (panoptic annotations / OOD benchmark scenes): [https://wilddash.cc/](https://wilddash.cc/)
 - **DeepLabV3+ architecture reference**: [https://github.com/jfzhang95/pytorch-deeplab-xception](https://github.com/jfzhang95/pytorch-deeplab-xception)
+- **DeepLabV3+ implementation used in this project**: [https://github.com/VainF/DeepLabV3Plus-Pytorch](https://github.com/VainF/DeepLabV3Plus-Pytorch)
 - **SegFormer model family (Hugging Face model card/docs)**: [https://huggingface.co/docs/transformers/model_doc/segformer](https://huggingface.co/docs/transformers/model_doc/segformer)
 
 For this project, the exact checkpoint files are loaded from user-provided local paths in the run scripts (set via `MODEL` or script config).
+
+DeepLabV3+ was selected using the VainF implementation because it is widely used in semantic-segmentation papers and provides a strong, reproducible baseline for benchmarking.
 
 ## Notes
 
