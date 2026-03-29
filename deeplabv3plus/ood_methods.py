@@ -326,39 +326,18 @@ def project_insignificant(features, P_ins):
     return f.reshape(B, H, W, C).permute(0, 3, 1, 2)
 
 
-def actsub_scale_prune(features, keep_ratio=0.1):
+def actsub_scale_clipping(features, percentile=90):
     """
-    Scale pruning (paper): keep top keep_ratio fraction of channels by scale (L2 norm over spatial).
-    Zero out channels with smallest scale. features: [B, C, H, W].
+    Scale clipping only: per-channel L2 norm (over spatial dims) is capped at the
+    batch's percentile of channel norms. No channel dropping, no per-pixel ReAct clamp.
+    features: [B, C, H, W]
     """
     B, C, H, W = features.shape
-    scale = features.reshape(B, C, -1).norm(p=2, dim=2)
-    k = max(1, int(C * keep_ratio))
-    _, top_idx = torch.topk(scale, k, dim=1)
-    mask = torch.zeros(B, C, 1, 1, device=features.device, dtype=features.dtype)
-    mask.scatter_(1, top_idx.unsqueeze(-1).unsqueeze(-1), 1.0)
-    return features * mask
-
-
-def actsub_shaping_react(features, percentile=90):
-    """ReAct-style clipping: clamp activations at per-sample percentile. features: [B, C, H, W]."""
-    B, C, H, W = features.shape
-    flat = features.reshape(B, -1)
-    # quantile() fails on very large tensors; use subset like ReAct
-    max_quantile_n = 2**20
-    q_val = percentile / 100.0
-    thresh_list = []
-    for b in range(B):
-        f = flat[b : b + 1].float()
-        n = f.numel()
-        if n <= max_quantile_n:
-            t = torch.quantile(f, q_val, dim=1, keepdim=True)
-        else:
-            perm = torch.randperm(n, device=f.device, dtype=torch.long)[:max_quantile_n]
-            t = torch.quantile(f.squeeze(0)[perm].unsqueeze(0), q_val, dim=1, keepdim=True)
-        thresh_list.append(t)
-    thresh = torch.cat(thresh_list, dim=0).reshape(B, 1, 1, 1)
-    return torch.clamp(features, max=thresh)
+    norms = features.reshape(B, C, -1).norm(p=2, dim=2).clamp(min=1e-6)
+    q = min(max(float(percentile) / 100.0, 0.0), 1.0)
+    thresh = torch.quantile(norms.float(), q, dim=1, keepdim=True).clamp(min=1e-6)
+    scale = (thresh / norms).clamp(max=1.0)
+    return features * scale.unsqueeze(-1).unsqueeze(-1)
 
 
 # Paper-faithful ActSub defaults (do not tune N or gallery fraction)
@@ -401,10 +380,9 @@ def actsub_score(model, x, P_dec, P_ins, first_part, last_conv, clip_percentile=
     with torch.no_grad():
         bottleneck = model.forward_features(x)
         features_256 = first_part(bottleneck)
-        # Decisive: project, scale prune (paper), then ReAct shape, logits, energy (S←)
+        # Decisive: project, scale clipping only, then logits, energy (S←)
         features_proj = project_decisive(features_256, P_dec)
-        features_proj = actsub_scale_prune(features_proj, keep_ratio=0.1)
-        features_shaped = actsub_shaping_react(features_proj, percentile=clip_percentile)
+        features_shaped = actsub_scale_clipping(features_proj, percentile=clip_percentile)
         logits = last_conv(features_shaped)
         out_size = target_size if target_size is not None else x.shape[-2:]
         if logits.shape[-2:] != out_size:
@@ -541,7 +519,7 @@ def tune_lambda_actsub(model, val_image_paths, gallery_ins, transform, device, l
                 bottleneck = model.forward_features(x)
                 features_256 = first_part(bottleneck)
                 f_dec = project_decisive(features_256, P_dec)
-                f_dec = actsub_shaping_react(f_dec, percentile=90)
+                f_dec = actsub_scale_clipping(f_dec, percentile=90)
                 logits = last_conv(f_dec)
                 S_left = -torch.logsumexp(logits, dim=1).mean()
                 f_ins = project_insignificant(features_256, P_ins).mean(dim=(2, 3))
