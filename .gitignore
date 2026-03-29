@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+
+# Local generated artifacts
+deeplabv3plus/wilddash_ood_masks_json/
+deeplabv3plus/perfect_final_1/
+*.pkl
+*.pth
+*.tar
