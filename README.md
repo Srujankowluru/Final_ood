@@ -50,17 +50,15 @@ bash scripts/run_perfect_final_1.sh
   - SegFormer only: `segformer/run_all_methods_segformer.py`
   - You can pass dataset-specific lists/masks via `--image-list` and `--mask-dir`.
 
-## Included vs not included
+## Data and model sources
 
-- **Included in this repo**
-  - Benchmark code and scripts
-  - Mapping files
-  - Final summary artifacts (`results_summary.csv/.json`, `method_thresholds.json`)
-  - Plot images (`metrics_auroc_fpr95.png`)
-- **Not included in this repo**
-  - Model checkpoints/weights (`.pth`, `.pt`, `.tar`, `.ckpt`)
-  - Raw dataset images/masks from Mapillary/WildDash
-  - Large generated intermediate folders (e.g., local temporary masks/galleries)
+- **Cityscapes dataset** (training domain / label taxonomy): [https://www.cityscapes-dataset.com/](https://www.cityscapes-dataset.com/)
+- **Mapillary Vistas dataset** (validation images and labels): [https://www.mapillary.com/dataset/vistas](https://www.mapillary.com/dataset/vistas)
+- **WildDash 2 dataset** (panoptic annotations / OOD benchmark scenes): [https://wilddash.cc/](https://wilddash.cc/)
+- **DeepLabV3+ architecture reference**: [https://github.com/jfzhang95/pytorch-deeplab-xception](https://github.com/jfzhang95/pytorch-deeplab-xception)
+- **SegFormer model family (Hugging Face model card/docs)**: [https://huggingface.co/docs/transformers/model_doc/segformer](https://huggingface.co/docs/transformers/model_doc/segformer)
+
+For this project, the exact checkpoint files are loaded from user-provided local paths in the run scripts (set via `MODEL` or script config).
 
 ## Notes
 
