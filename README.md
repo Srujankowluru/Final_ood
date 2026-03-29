@@ -55,7 +55,6 @@ bash scripts/run_perfect_final_1.sh
 - **Cityscapes dataset** (training domain / label taxonomy): [https://www.cityscapes-dataset.com/](https://www.cityscapes-dataset.com/)
 - **Mapillary Vistas dataset** (validation images and labels): [https://www.mapillary.com/dataset/vistas](https://www.mapillary.com/dataset/vistas)
 - **WildDash 2 dataset** (panoptic annotations / OOD benchmark scenes): [https://wilddash.cc/](https://wilddash.cc/)
-- **DeepLabV3+ architecture reference**: [https://github.com/jfzhang95/pytorch-deeplab-xception](https://github.com/jfzhang95/pytorch-deeplab-xception)
 - **DeepLabV3+ resnet101 cityscapes model **: [https://github.com/VainF/DeepLabV3Plus-Pytorch](https://github.com/VainF/DeepLabV3Plus-Pytorch)
 - **SegFormer model  (Hugging Face model card/docs)**: [https://huggingface.co/docs/transformers/model_doc/segformer](https://huggingface.co/docs/transformers/model_doc/segformer)
 
