@@ -56,11 +56,5 @@ bash scripts/run_perfect_final_1.sh
 - **Mapillary Vistas dataset** (validation images and labels): [https://www.mapillary.com/dataset/vistas](https://www.mapillary.com/dataset/vistas)
 - **WildDash 2 dataset** (panoptic annotations / OOD benchmark scenes): [https://wilddash.cc/](https://wilddash.cc/)
 - **DeepLabV3+ resnet101 cityscapes model**: [https://github.com/VainF/DeepLabV3Plus-Pytorch](https://github.com/VainF/DeepLabV3Plus-Pytorch)
-- **SegFormer model  (Hugging Face model card/docs)**: [https://huggingface.co/docs/transformers/model_doc/segformer](https://huggingface.co/docs/transformers/model_doc/segformer)
+- **SegFormer resnet101 cityscapes model  (Hugging Face model card/docs)**: [https://huggingface.co/docs/transformers/model_doc/segformer](https://huggingface.co/docs/transformers/model_doc/segformer)
 
-
-## Notes
-
-- WildDash masks are generated from `mapping/id_ood_mapping.json` using key `wilddash`.
-- Mapillary evaluation uses existing mask directory path configured in scripts (can be overridden with `MAPILLARY_MASK` env var).
-- Ignore pixels are excluded from metrics in both DeepLab and SegFormer evaluation code.
