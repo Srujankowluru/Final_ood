@@ -55,6 +55,6 @@ bash scripts/run_perfect_final_1.sh
 - **Cityscapes dataset** (training domain / label taxonomy): [https://www.cityscapes-dataset.com/](https://www.cityscapes-dataset.com/)
 - **Mapillary Vistas dataset** (validation images and labels): [https://www.mapillary.com/dataset/vistas](https://www.mapillary.com/dataset/vistas)
 - **WildDash 2 dataset** (panoptic annotations / OOD benchmark scenes): [https://wilddash.cc/](https://wilddash.cc/)
-- **DeepLabV3+ resnet101 cityscapes model**: [https://github.com/VainF/DeepLabV3Plus-Pytorch](https://github.com/VainF/DeepLabV3Plus-Pytorch)
+- **DeepLabV3+ cityscapes model**: [https://github.com/VainF/DeepLabV3Plus-Pytorch](https://github.com/VainF/DeepLabV3Plus-Pytorch)
 - **SegFormer cityscapes model (Hugging Face model)**: [https://huggingface.co/nvidia/segformer-b5-finetuned-cityscapes-1024-1024](https://huggingface.co/nvidia/segformer-b5-finetuned-cityscapes-1024-1024)
 
